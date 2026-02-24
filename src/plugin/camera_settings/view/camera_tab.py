@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Callable
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QPushButton
@@ -13,15 +13,12 @@ from src.plugin.camera_settings.view.camera_settings_schema import (
     BRIGHTNESS_GROUP,
     ARUCO_GROUP,
 )
-from src.plugin.camera_settings.mapper import CameraSettingsMapper
 
 
-
-
-def camera_tab_factory(parent=None) -> Tuple[CameraSettingsView, SettingsView]:
+def camera_tab_factory(mapper: Callable, parent=None) -> Tuple[CameraSettingsView, SettingsView]:
     settings_view = SettingsView(
         component_name="CameraSettings",
-        mapper=CameraSettingsMapper.to_flat_dict,
+        mapper=mapper,
         parent=parent,
     )
     settings_view.add_tab("Core",        [CORE_GROUP])

@@ -1,11 +1,11 @@
 from typing import Optional
 
 from src.plugin.camera_settings.camera_settings_data import CameraSettingsData
-from src.plugin.camera_settings.ICameraSettingsService import ICameraSettingsService
+from src.plugin.camera_settings.ICameraSettingsService import ISettingsPersistenceService
 
 
 class CameraSettingsModel:
-    def __init__(self, service: ICameraSettingsService):
+    def __init__(self, service: ISettingsPersistenceService):
         self._service = service
         self._settings: Optional[CameraSettingsData] = None
 

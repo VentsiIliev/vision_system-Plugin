@@ -1,5 +1,6 @@
 import json
 import os
+import tempfile
 from abc import ABC
 
 from src.VisionSystem.core.settings.CameraSettingKey import CameraSettingKey
@@ -23,8 +24,18 @@ class SettingsManager:
             return json.load(f)
 
     def saveSettings(self, settings: dict) -> None:
-        with open(self.config_file_path, 'w') as f:
-            json.dump(settings, f, indent=2)
+        dir_name = os.path.dirname(self.config_file_path)
+        os.makedirs(dir_name, exist_ok=True)
+        # Write to a temp file in the same directory, then atomically replace.
+        # This prevents a crash mid-write from corrupting the JSON file.
+        fd, tmp_path = tempfile.mkstemp(dir=dir_name, suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w") as f:
+                json.dump(settings, f, indent=2)
+            os.replace(tmp_path, self.config_file_path)
+        except Exception:
+            os.unlink(tmp_path)
+            raise
 
     def updateSettings(self, vision_system, settings: dict,logging_enabled:bool,logger) -> tuple[bool, str]:
         """

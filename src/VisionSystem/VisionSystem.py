@@ -121,8 +121,8 @@ class VisionSystem:
                                                height=self.camera_settings.get_camera_height())
 
         self.camera, camera_index = camera_initializer.initializeCameraWithRetry(camera_index)
-        VIDEO_URL = 'http://192.168.222.178:5000/video_feed'  # replace with server IP if remote
-        self.camera = Camera(device=VIDEO_URL, width=1280, height=720, fps=30,backend="ANY") # Use RemoteCamera for MJPEG stream
+        # VIDEO_URL = 'http://192.168.222.178:5000/video_feed'  # replace with server IP if remote
+        # self.camera = Camera(device=VIDEO_URL, width=1280, height=720, fps=30,backend="ANY") # Use RemoteCamera for MJPEG stream
         self.camera.set_auto_exposure(True)
         self.camera_settings.set_camera_index(camera_index)
 
