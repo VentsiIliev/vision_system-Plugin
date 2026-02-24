@@ -3,9 +3,9 @@ from typing import Tuple
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QPushButton
 
-from src.gui.settings.settings_view.settings_view import SettingsView
-from src.gui.camera_settings.view.camera_settings_view import CameraSettingsView
-from src.gui.camera_settings.view.camera_settings_schema import (
+from src.plugin.settings.settings_view.settings_view import SettingsView
+from src.plugin.camera_settings.view.camera_settings_view import CameraSettingsView
+from src.plugin.camera_settings.view.camera_settings_schema import (
     CORE_GROUP,
     CONTOUR_GROUP,
     PREPROCESSING_GROUP,
@@ -13,7 +13,7 @@ from src.gui.camera_settings.view.camera_settings_schema import (
     BRIGHTNESS_GROUP,
     ARUCO_GROUP,
 )
-from src.gui.camera_settings.mapper import CameraSettingsMapper
+from src.plugin.camera_settings.mapper import CameraSettingsMapper
 
 
 

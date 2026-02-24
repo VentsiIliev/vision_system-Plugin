@@ -1,7 +1,7 @@
 from typing import Optional
 
-from src.gui.camera_settings.camera_settings_data import CameraSettingsData
-from src.gui.camera_settings.ICameraSettingsService import ICameraSettingsService
+from src.plugin.camera_settings.camera_settings_data import CameraSettingsData
+from src.plugin.camera_settings.ICameraSettingsService import ICameraSettingsService
 
 
 class CameraSettingsModel:

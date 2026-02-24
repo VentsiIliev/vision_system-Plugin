@@ -10,7 +10,7 @@
   "Min contour area": 1000.0,
   "Max contour area": 10000000.0,
   "Contour detection": true,
-  "Draw contours": true,
+  "Draw contours": false,
   "Preprocessing": {
     "Gaussian blur": true,
     "Blur kernel size": 3,

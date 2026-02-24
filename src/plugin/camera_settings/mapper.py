@@ -4,7 +4,7 @@ from copy import deepcopy
 from typing import List, Tuple
 
 from src.VisionSystem.core.settings.CameraSettings import CameraSettings
-from src.gui.camera_settings.camera_settings_data import CameraSettingsData
+from src.plugin.camera_settings.camera_settings_data import CameraSettingsData
 
 
 class CameraSettingsMapper:

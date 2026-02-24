@@ -14,9 +14,9 @@ All internal widget signals are re-emitted for convenient access.
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
 from PyQt6.QtCore import pyqtSignal
 
-from src.gui.settings.settings_view.settings_view import SettingsView
-from src.gui.utils_widgets.clickable_label import ClickableLabel
-from src.gui.camera_settings.view.camera_controls_widget import CameraControlsWidget
+from src.plugin.settings.settings_view.settings_view import SettingsView
+from src.plugin.utils_widgets.clickable_label import ClickableLabel
+from src.plugin.camera_settings.view.camera_controls_widget import CameraControlsWidget
 
 
 class CameraSettingsView(QWidget):

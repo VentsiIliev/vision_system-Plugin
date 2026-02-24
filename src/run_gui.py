@@ -6,9 +6,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from PyQt6.QtGui import QPixmap, QColor
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
-from src.gui.camera_settings import CameraSettingsPlugin, ICameraSettingsService
-from src.gui.camera_settings.camera_settings_data import CameraSettingsData
-from src.gui.camera_settings.mapper import CameraSettingsMapper
+from src.plugin.camera_settings import CameraSettingsPlugin, ICameraSettingsService
+from src.plugin.camera_settings.camera_settings_data import CameraSettingsData
+from src.plugin.camera_settings.mapper import CameraSettingsMapper
 
 # ── Sample data matching the exact JSON structure ──────────────────────────────
 

@@ -11,8 +11,8 @@ from PyQt6.QtWidgets import QApplication, QMainWindow
 from external_dependencies.MessageBroker import MessageBroker
 from src.VisionSystem.VisionSystem import VisionSystem
 from src.VisionSystem.core.external_communication.system_state_management import VisionTopics
-from src.gui.camera_settings import ICameraSettingsService, CameraSettingsPlugin
-from src.gui.camera_settings.camera_settings_data import CameraSettingsData
+from src.plugin.camera_settings import ICameraSettingsService, CameraSettingsPlugin
+from src.plugin.camera_settings.camera_settings_data import CameraSettingsData
 
 
 class FrameBridge:
@@ -34,7 +34,7 @@ class FrameBridge:
         self._timer.start(1000 // fps)
 
     def set_mode(self, mode: str) -> None:
-        """Switch between 'live' and 'threshold'. Called from main thread."""
+        """Switch between 'live' and 'threshold'. Called from the main thread."""
         self._mode = mode
 
     def on_live_frame(self, message: dict) -> None:
@@ -90,7 +90,7 @@ class FakeCameraSettingsService(ICameraSettingsService):
 
     # Camera actions
     def set_raw_mode(self, enabled: bool) -> None:
-        print(f"[service] Raw mode: {'ON' if enabled else 'OFF'}")
+        self.v_system.rawMode = enabled
 
     def capture_image(self) -> None:
         print(f"[service] Capturing image...")

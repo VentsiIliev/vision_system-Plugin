@@ -6,11 +6,11 @@ from PyQt6.QtWidgets import (
     QPushButton, QVBoxLayout, QWidget,
 )
 
-from src.gui.settings.settings_view.styles import (
+from src.plugin.settings.settings_view.styles import (
     ACTION_BTN_STYLE, BG_COLOR, BORDER, GHOST_BTN_STYLE, LABEL_STYLE,
     PRIMARY_DARK, PRIMARY_LIGHT,
 )
-from src.gui.utils_widgets.touch_spinbox import TouchSpinBox
+from src.plugin.utils_widgets.touch_spinbox import TouchSpinBox
 
 
 # ── Integer editor dialog ─────────────────────────────────────────────────────

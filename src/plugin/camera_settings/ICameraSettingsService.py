@@ -5,7 +5,7 @@ Combines camera settings persistence and camera actions in a single service.
 """
 from typing import Protocol
 
-from src.gui.camera_settings.camera_settings_data import CameraSettingsData
+from src.plugin.camera_settings.camera_settings_data import CameraSettingsData
 
 
 class ICameraSettingsService(Protocol):

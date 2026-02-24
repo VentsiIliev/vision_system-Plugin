@@ -147,8 +147,6 @@ class DataManager:
                            broadcast_to_ui=False)
 
 
-
-
     def saveWorkAreaPoints(self, data):
         """
         Saves the work area points captured by the camera service.
@@ -161,7 +159,7 @@ class DataManager:
             return False, "No data provided to save"
 
         try:
-            # Handle new format with area type
+            # Handle a new format with an area type
             if isinstance(data, dict) and 'area_type' in data and 'corners' in data:
                 area_type = data['area_type']
                 points = data['corners']
@@ -174,7 +172,7 @@ class DataManager:
 
                 points_array = np.array(points, dtype=np.float32)
 
-                # Save to area-specific file
+                # Save to an area-specific file
                 if area_type == 'pickup':
                     np.save(self.work_area_points_path, points_array)
                     self.pickupAreaPoints = points_array
@@ -194,7 +192,7 @@ class DataManager:
                     self.sprayAreaPoints = points_array
                     message = f"Spray area points saved successfully"
 
-                # Also save to legacy path for backward compatibility if this is the first area saved
+                # Also save to a legacy path for backward compatibility if this is the first area saved
                 if not hasattr(self, 'workAreaPoints') or self.workAreaPoints is None:
                     np.save(self.work_area_points_path, points_array)
                     self.workAreaPoints = points_array

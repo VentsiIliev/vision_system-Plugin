@@ -2,16 +2,16 @@ from typing import Optional
 from PyQt6.QtWidgets import QWidget
 
 from src.VisionSystem.core.external_communication.system_state_management import VisionTopics
-from src.gui.base_settings_plugin.base_settings_plugin import BaseSettingsPlugin
-from src.gui.settings.settings_view import SettingsView
-from src.gui.utils_widgets.clickable_label import ClickableLabel
+from src.plugin.base_settings_plugin.base_settings_plugin import BaseSettingsPlugin
+from src.plugin.settings.settings_view import SettingsView
+from src.plugin.utils_widgets.clickable_label import ClickableLabel
 
-from src.gui.camera_settings.controller import CameraSettingsController
-from src.gui.camera_settings.model import CameraSettingsModel
-from src.gui.camera_settings.ICameraSettingsService import ICameraSettingsService
-from src.gui.camera_settings.view.camera_tab import camera_tab_factory
-from src.gui.camera_settings.view.camera_settings_view import CameraSettingsView
-# from src.gui.base_settings_plugin.base_settings_plugin import BaseSettingsPlugin
+from src.plugin.camera_settings.controller import CameraSettingsController
+from src.plugin.camera_settings.model import CameraSettingsModel
+from src.plugin.camera_settings.ICameraSettingsService import ICameraSettingsService
+from src.plugin.camera_settings.view.camera_tab import camera_tab_factory
+from src.plugin.camera_settings.view.camera_settings_view import CameraSettingsView
+# from src.plugin.base_settings_plugin.base_settings_plugin import BaseSettingsPlugin
 
 
 class CameraSettingsPlugin(

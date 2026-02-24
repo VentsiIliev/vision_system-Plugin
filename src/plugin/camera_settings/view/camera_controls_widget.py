@@ -19,8 +19,8 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGroupBox
 )
 
-from src.gui.utils_widgets.SwitchButton import QToggle
-from src.gui.utils_widgets.MaterialButton import MaterialButton
+from src.plugin.utils_widgets.SwitchButton import QToggle
+from src.plugin.utils_widgets.MaterialButton import MaterialButton
 
 
 _LABEL_DARK = "color: #AAAACC; font-size: 10pt; background: transparent;"

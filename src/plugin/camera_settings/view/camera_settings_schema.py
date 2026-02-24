@@ -1,4 +1,4 @@
-from src.gui.settings.settings_view.schema import SettingField, SettingGroup
+from src.plugin.settings.settings_view.schema import SettingField, SettingGroup
 
 _ARUCO_DICTS = [
     "DICT_4X4_50",  "DICT_4X4_100",  "DICT_4X4_250",  "DICT_4X4_1000",
