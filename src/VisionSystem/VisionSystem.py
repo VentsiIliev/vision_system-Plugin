@@ -259,10 +259,17 @@ class VisionSystem:
         return self.correctedImage
 
     def updateSettings(self, settings: dict):
-        return self.service.updateSettings(vision_system=self,
-                                           settings=settings,
-                                           logging_enabled=ENABLE_LOGGING,
-                                           logger=vision_system_logger)
+        def reinit_camera(width: int, height: int) -> None:
+            self.camera = Camera(width, height)
+
+        return self.service.updateSettings(
+            camera_settings=self.camera_settings,
+            settings=settings,
+            logging_enabled=ENABLE_LOGGING,
+            logger=vision_system_logger,
+            brightness_controller=self.brightnessManager.brightnessController,
+            reinit_camera=reinit_camera,
+        )
 
     def saveWorkAreaPoints(self, data):
         return self.service.saveWorkAreaPoints(data)

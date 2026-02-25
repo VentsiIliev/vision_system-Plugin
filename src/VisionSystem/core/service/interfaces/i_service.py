@@ -17,11 +17,13 @@ class IService(ABC):
 
     @abstractmethod
     def updateSettings(self,
-                       vision_system,
+                       camera_settings,
                        settings: dict,
                        logging_enabled: bool,
-                       logger) -> Tuple[bool, str]:
-        """Update camera/settings and apply to vision_system"""
+                       logger,
+                       brightness_controller=None,
+                       reinit_camera=None) -> Tuple[bool, str]:
+        """Apply settings dict to camera_settings and propagate side-effects."""
         pass
 
     # ---------------- Calibration / DataManager methods ----------------

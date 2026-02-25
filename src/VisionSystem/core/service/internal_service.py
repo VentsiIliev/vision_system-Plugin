@@ -24,8 +24,13 @@ class Service(IService):
         print(f"[SettingsManager] after from dict {type(settings)} {settings}")
         return settings
 
-    def updateSettings(self, vision_system, settings: dict, logging_enabled: bool, logger) -> Tuple[bool, str]:
-        return self.settings_manager.updateSettings(vision_system, settings, logging_enabled, logger)
+    def updateSettings(self, camera_settings, settings: dict, logging_enabled: bool, logger,
+                       brightness_controller=None, reinit_camera=None) -> Tuple[bool, str]:
+        return self.settings_manager.updateSettings(
+            camera_settings, settings, logging_enabled, logger,
+            brightness_controller=brightness_controller,
+            reinit_camera=reinit_camera,
+        )
 
     def saveSettings(self, settings: dict) -> None:
         self.settings_manager.saveSettings(settings)

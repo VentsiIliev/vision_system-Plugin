@@ -157,6 +157,9 @@ def handle_contour_detection(vision_system,sort=False):
             contours_inside_spray_area.append(cnt)
 
     if not contours_inside_spray_area:
+        print(f"Publishing latest image to message broker.")
+        vision_system.message_publisher.publish_latest_image(vision_system.correctedImage)
+
         return None, vision_system.correctedImage, None
 
     final_contours = None

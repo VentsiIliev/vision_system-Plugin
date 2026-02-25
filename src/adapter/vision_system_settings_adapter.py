@@ -30,10 +30,6 @@ class VisionSystemSettingsAdapter:
     def save_settings(self, settings: CameraSettingsData) -> None:
         settings_dict = self._mapper.to_domain(settings)
         self._vs.service.saveSettings(settings_dict)
-        self._vs.service.updateSettings(
-            self._vs,
-            settings_dict,
-            logging_enabled=False,
-            logger=None,
-        )
+        # Delegate to VisionSystem.updateSettings which wires all side-effects
+        self._vs.updateSettings(settings_dict)
 

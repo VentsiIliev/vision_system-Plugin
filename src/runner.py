@@ -52,21 +52,19 @@ class FakeSettingsService(IService):
     # -----------------------------------------------------
 
     def updateSettings(self,
-                       vision_system,
+                       camera_settings,
                        settings: dict,
                        logging_enabled: bool,
-                       logger) -> Tuple[bool, str]:
+                       logger,
+                       brightness_controller=None,
+                       reinit_camera=None) -> Tuple[bool, str]:
 
         if self.fail_on_update:
             return False, "FakeSettingsService: simulated update failure"
 
         try:
-            # Merge into internal storage
             self._settings.update(settings)
-
-            # Apply to VisionSystem like real implementation
-            success, message = vision_system.camera_settings.updateSettings(settings)
-
+            success, message = camera_settings.updateSettings(settings)
             if not success:
                 return False, message
 

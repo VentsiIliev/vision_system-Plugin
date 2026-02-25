@@ -37,6 +37,7 @@ class FrameBridge:
 
     def on_live_frame(self, message) -> None:
         """Subscriber callback for VisionTopics.LATEST_IMAGE."""
+        print("Received live frame")
         image = message.get("image") if isinstance(message, dict) else message
         if image is None:
             return

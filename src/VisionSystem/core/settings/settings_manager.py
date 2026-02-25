@@ -1,13 +1,12 @@
 import json
 import os
 import tempfile
-from abc import ABC
+from typing import Callable
 
 from src.VisionSystem.core.settings.CameraSettingKey import CameraSettingKey
 from src.VisionSystem.core.logging.custom_logging import log_if_enabled, LoggingLevel
-from src.plvision.PLVision.Camera import Camera
-from src.VisionSystem.core.service.interfaces.i_service import IService
-CONFIG_FILE_PATH = os.path.join(os.path.dirname(__file__), 'config.json') # this is just a default path if not path provided
+
+CONFIG_FILE_PATH = os.path.join(os.path.dirname(__file__), 'config.json')
 
 class SettingsManager:
 
@@ -37,57 +36,82 @@ class SettingsManager:
             os.unlink(tmp_path)
             raise
 
-    def updateSettings(self, vision_system, settings: dict,logging_enabled:bool,logger) -> tuple[bool, str]:
+    def updateSettings(
+        self,
+        camera_settings,
+        settings: dict,
+        logging_enabled: bool,
+        logger,
+        brightness_controller=None,
+        reinit_camera: Callable[[int, int], None] | None = None,
+    ) -> tuple[bool, str]:
         """
-        Updates the camera settings using the CameraSettings object.
-        """
+        Apply *settings* dict to *camera_settings* and propagate side-effects.
 
-        current_index = vision_system.camera_settings.get_camera_index()
-        current_width = vision_system.camera_settings.get_camera_width()
-        current_height = vision_system.camera_settings.get_camera_height()
+        Parameters
+        ----------
+        camera_settings : CameraSettings
+            The live settings object to update.
+        settings : dict
+            Nested dict in the camera_settings.json format.
+        logging_enabled : bool
+        logger :
+            Logger instance (or None).
+        brightness_controller :
+            The PID controller whose Kp/Ki/Kd/target must stay in sync.
+            Optional — pass None to skip brightness sync.
+        reinit_camera : Callable[[width, height], None] | None
+            Called when index/width/height change so the caller can
+            swap the Camera instance.  Optional — pass None to skip.
+        """
+        current_index  = camera_settings.get_camera_index()
+        current_width  = camera_settings.get_camera_width()
+        current_height = camera_settings.get_camera_height()
 
         try:
-            # Update the camera_settings object
-            success, message = vision_system.camera_settings.updateSettings(settings)
-
+            success, message = camera_settings.updateSettings(settings)
             if not success:
                 return False, message
 
-            # Update the brightness controller with new PID values
-            # Access through brightnessManager, not directly
-            vision_system.brightnessManager.brightnessController.Kp = vision_system.camera_settings.get_brightness_kp()
-            vision_system.brightnessManager.brightnessController.Ki = vision_system.camera_settings.get_brightness_ki()
-            vision_system.brightnessManager.brightnessController.Kd = vision_system.camera_settings.get_brightness_kd()
-            vision_system.brightnessManager.brightnessController.target = vision_system.camera_settings.get_target_brightness()
+            # ── Brightness controller sync ──────────────────────────────
+            if brightness_controller is not None:
+                brightness_controller.Kp     = camera_settings.get_brightness_kp()
+                brightness_controller.Ki     = camera_settings.get_brightness_ki()
+                brightness_controller.Kd     = camera_settings.get_brightness_kd()
+                brightness_controller.target = camera_settings.get_target_brightness()
 
-            log_if_enabled(enabled=logging_enabled,
-                           logger=logger,
-                           level=LoggingLevel.INFO,
-                           message=f"Updated brightness controller - Kp: {vision_system.camera_settings.get_brightness_kp()}, "
-                                  f"Ki: {vision_system.camera_settings.get_brightness_ki()}, "
-                                  f"Kd: {vision_system.camera_settings.get_brightness_kd()}, "
-                                  f"Target: {vision_system.camera_settings.get_target_brightness()}",
-                           broadcast_to_ui=False)
+                log_if_enabled(
+                    enabled=logging_enabled, logger=logger, level=LoggingLevel.INFO,
+                    message=(
+                        f"Updated brightness controller — "
+                        f"Kp: {camera_settings.get_brightness_kp()}, "
+                        f"Ki: {camera_settings.get_brightness_ki()}, "
+                        f"Kd: {camera_settings.get_brightness_kd()}, "
+                        f"Target: {camera_settings.get_target_brightness()}"
+                    ),
+                    broadcast_to_ui=False,
+                )
 
-            # Update camera resolution if changed
-            if (CameraSettingKey.WIDTH.value in settings or
-                    CameraSettingKey.HEIGHT.value in settings or
-                    CameraSettingKey.INDEX.value in settings):
-                # Reinitialize camera with new settings
+            # ── Camera reinitialization ─────────────────────────────────
+            resolution_keys = {
+                CameraSettingKey.WIDTH.value,
+                CameraSettingKey.HEIGHT.value,
+                CameraSettingKey.INDEX.value,
+            }
+            if reinit_camera is not None and resolution_keys & settings.keys():
+                new_index  = camera_settings.get_camera_index()
+                new_width  = camera_settings.get_camera_width()
+                new_height = camera_settings.get_camera_height()
+                if (new_index != current_index or
+                        new_width != current_width or
+                        new_height != current_height):
+                    reinit_camera(new_width, new_height)
 
-                if (current_index != vision_system.camera_settings.get_camera_index() or
-                        current_width != vision_system.camera_settings.get_camera_width() or
-                        current_height != vision_system.camera_settings.get_camera_height()):
-                    vision_system.camera = Camera(
-                        vision_system.camera_settings.get_camera_width(),
-                        vision_system.camera_settings.get_camera_height()
-                    )
-
-            log_if_enabled(enabled=logging_enabled,
-                           logger=logger,
-                           level=LoggingLevel.INFO,
-                           message=f"Settings updated successfully",
-                           broadcast_to_ui=False)
+            log_if_enabled(
+                enabled=logging_enabled, logger=logger, level=LoggingLevel.INFO,
+                message="Settings updated successfully",
+                broadcast_to_ui=False,
+            )
             return True, "Settings updated successfully"
 
         except Exception as e:
